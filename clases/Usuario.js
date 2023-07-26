@@ -35,4 +35,24 @@ module.exports = class Usuario extends Conexion {
         await this.desconectar()
         return registro
     }
+
+    async busqueda(id) {
+        const sql = {
+            // text: "SELECT * FROM usuarios WHERE id=$1",
+            text: "SELECT * FROM usuarios WHERE id=$1 OR $1 IS NULL", //Opción para mostrar todo el listado cuando no envían el Id
+            values: [id]
+        }
+        await this.conectar()
+        const registro = await this.client.query(sql)
+        await this.desconectar()
+        return registro
+    }
+
+    async listarUsuarios() {
+        const sql = "SELECT * FROM usuarios";
+        await this.conectar()
+        const registros = await this.client.query(sql)
+        await this.desconectar()
+        return registros
+    }
 }
